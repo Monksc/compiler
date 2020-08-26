@@ -17,11 +17,11 @@ fn main() {
         index: 0,
     };
 
-    let mut instructions = Vec::<model::Statement>::new();
-    let add = model::Statement::Add(r1, r2);
-    let addi1 = model::Statement::Addi(r1, 10);
-    let addi2 = model::Statement::Addi(r1, 4);
-    let subpc = model::Statement::Addi(pc, -4);
+    let mut instructions = Vec::<model::LowLevelStatement>::new();
+    let add = model::LowLevelStatement::Add(r1, r2);
+    let addi1 = model::LowLevelStatement::Addi(r1, 10);
+    let addi2 = model::LowLevelStatement::Addi(r1, 4);
+    let subpc = model::LowLevelStatement::Addi(pc, -4);
     instructions.push(add);
     instructions.push(addi1);
     instructions.push(addi2);

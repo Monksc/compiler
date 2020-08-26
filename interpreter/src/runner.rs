@@ -3,7 +3,7 @@ use std::collections::HashMap;
 #[derive(Debug)]
 pub struct Runner {
     registers: HashMap<model::Register, model::RegisterValueTypeSigned>,
-    statements: Vec<model::Statement>,
+    statements: Vec<model::LowLevelStatement>,
 }
 
 impl Runner {
@@ -15,7 +15,7 @@ impl Runner {
         }
     }
 
-    pub fn from(statement: Vec<model::Statement>) -> Runner{
+    pub fn from(statement: Vec<model::LowLevelStatement>) -> Runner{
 
         let mut regs = HashMap::new();
 
@@ -59,44 +59,44 @@ impl Runner {
 
         println!("{:?}", statement);
         match statement {
-            model::Statement::Set (reg1, reg2) => {
+            model::LowLevelStatement::Set (reg1, reg2) => {
                 let v2 = self.registers[reg2];
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 = v2;
             },
-            model::Statement::Add (reg1, reg2) => {
+            model::LowLevelStatement::Add (reg1, reg2) => {
                 let v2 = self.registers[reg2];
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 += v2;
             },
-            model::Statement::Addi (reg1, value) => {
+            model::LowLevelStatement::Addi (reg1, value) => {
                 let rvalue = self.registers.get_mut(reg1).unwrap();
                 *rvalue += value
             },
-            model::Statement::Sub (reg1, reg2) => {
+            model::LowLevelStatement::Sub (reg1, reg2) => {
                 let v2 = self.registers[reg2];
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 -= v2;
             },
-            model::Statement::Mult (reg1, reg2) => {
+            model::LowLevelStatement::Mult (reg1, reg2) => {
                 let v2 = self.registers[reg2];
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 *= v2;
             },
-            model::Statement::Multi (reg1, value) => {
+            model::LowLevelStatement::Multi (reg1, value) => {
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 *= value;
             },
-            model::Statement::Div (reg1, reg2) => {
+            model::LowLevelStatement::Div (reg1, reg2) => {
                 let v2 = self.registers[reg2];
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 /= v2;
             },
-            model::Statement::Divi (reg1, value) => {
+            model::LowLevelStatement::Divi (reg1, value) => {
                 let v1 = self.registers.get_mut(reg1).unwrap();
                 *v1 /= value;
             },
-            model::Statement::Je (reg1, reg2, dx) => {
+            model::LowLevelStatement::Je (reg1, reg2, dx) => {
                 let v1 = self.registers[reg1];
                 let v2 = self.registers[reg2];
                 if v1 == v2 {
@@ -104,7 +104,7 @@ impl Runner {
                     *pc += dx;
                 }
             },
-            model::Statement::Jne (reg1, reg2, dx) => {
+            model::LowLevelStatement::Jne (reg1, reg2, dx) => {
                 let v1 = self.registers[reg1];
                 let v2 = self.registers[reg2];
                 if v1 != v2 {
@@ -112,7 +112,7 @@ impl Runner {
                     *pc += dx;
                 }
             },
-            model::Statement::Jmp (dx) => {
+            model::LowLevelStatement::Jmp (dx) => {
                 let pc = self.registers.get_mut(&Runner::pc_reg()).unwrap();
                 *pc += dx;
             },
